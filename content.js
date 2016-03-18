@@ -1,5 +1,3 @@
-var elements = document.getElementsByTagName('*');
-
 chrome.storage.sync.get({
     prochazkaName: 'Baby Voldemort'
 }, function(items) {
@@ -73,38 +71,88 @@ chrome.storage.sync.get({
             break;
     }
 
-    console.log(genitiv, dativ, akuzativ, lokal, instrumental, plural);
+    function replaceText(text) {
+        var newtext = text .replace(/Radoslav Procházka|Radoslav Prochazka|radoslav procházka|radoslav prochazka/gi, nominativ)
+            .replace(/Radoslavom Procházkom|Radoslavom Prochazkom|radoslavom procházkom|radoslavom prochazkom/gi, instrumental )
+            .replace(/Radoslava Procházku|Radoslava Prochazku|radoslava procházku|radoslava prochazku/gi, akuzativ )
+            .replace(/Radoslavovi Procházkovi|Radoslavovi Prochazkovi|radoslavovi procházkovi|radoslavovi prochazkovi/gi, dativ )
+            .replace(/Radoslavovia Procházkovia|Radoslavovia Prochazkovia|radoslavovia procházkovia|radoslavovia prochazkovia/gi, plural )
+            .replace(/Rado Procházka|Rado Prochazka|rado procházka|rado prochazka/gi, nominativ)
+            .replace(/Radom Procházkom|Radom Prochazkom|radom procházkom|radom prochazkom/gi, instrumental )
+            .replace(/Rada Procházku|Rada Prochazku|rada procházku|rada prochazku/gi, akuzativ )
+            .replace(/Radovi Procházkovi|Radovi Prochazkovi|radovi procházkovi|radovi prochazkovi/gi, dativ )
+            .replace(/Radovia Procházkovia|Radovia Prochazkovia|radovia procházkovia|radovia prochazkovia/gi, plural )
+            .replace(/Procházka|Prochazka|procházka|prochazka/gi, nominativ)
+            .replace(/Procházkom|Prochazkom|procházkom|prochazkom/gi, instrumental )
+            .replace(/Procházku|Prochazku|procházku|prochazku/gi, akuzativ )
+            .replace(/Procházkovi|Prochazkovi|procházkovi|prochazkovi/gi, dativ)
+            .replace(/Procházkovia|Prochazkovia|procházkovia|prochazkovia/gi, plural )
+        ;
 
-    for (var i = 0; i < elements.length; i++) {
-        var element = elements[i];
+        return newtext;
+    }
 
-        for (var j = 0; j < element.childNodes.length; j++) {
-            var node = element.childNodes[j];
+    function performReplaceOnNodeList(elements) {
+        for (var i = 0; i < elements.length; i++) {
+            var element = elements[i];
 
-            if (node.nodeType === 3) {
-                var text = node.nodeValue;
-                var replacedText = text .replace(/Radoslav Procházka|Radoslav Prochazka|radoslav procházka|radoslav prochazka/gi, nominativ)
-                                        .replace(/Radoslavom Procházkom|Radoslavom Prochazkom|radoslavom procházkom|radoslavom prochazkom/gi, instrumental )
-                                        .replace(/Radoslava Procházku|Radoslava Prochazku|radoslava procházku|radoslava prochazku/gi, akuzativ )
-                                        .replace(/Radoslavovi Procházkovi|Radoslavovi Prochazkovi|radoslavovi procházkovi|radoslavovi prochazkovi/gi, dativ )
-                                        .replace(/Radoslavovia Procházkovia|Radoslavovia Prochazkovia|radoslavovia procházkovia|radoslavovia prochazkovia/gi, plural )
-                                        .replace(/Rado Procházka|Rado Prochazka|rado procházka|rado prochazka/gi, nominativ)
-                                        .replace(/Radom Procházkom|Radom Prochazkom|radom procházkom|radom prochazkom/gi, instrumental )
-                                        .replace(/Rada Procházku|Rada Prochazku|rada procházku|rada prochazku/gi, akuzativ )
-                                        .replace(/Radovi Procházkovi|Radovi Prochazkovi|radovi procházkovi|radovi prochazkovi/gi, dativ )
-                                        .replace(/Radovia Procházkovia|Radovia Prochazkovia|radovia procházkovia|radovia prochazkovia/gi, plural )
-                                        .replace(/Procházka|Prochazka|procházka|prochazka/gi, nominativ)
-                                        .replace(/Procházkom|Prochazkom|procházkom|prochazkom/gi, instrumental )
-                                        .replace(/Procházku|Prochazku|procházku|prochazku/gi, akuzativ )
-                                        .replace(/Procházkovi|Prochazkovi|procházkovi|prochazkovi/gi, dativ)
-                                        .replace(/Procházkovia|Prochazkovia|procházkovia|prochazkovia/gi, plural )
-                ;
+            for (var j = 0; j < element.childNodes.length; j++) {
+                var node = element.childNodes[j];
 
-                if (replacedText !== text) {
-                    element.replaceChild(document.createTextNode(replacedText), node);
+                if (node.nodeType === 3) {
+                    var text = node.nodeValue;
+                    var replacedText = replaceText(text);
+
+                    if (replacedText !== text) {
+                        element.replaceChild(document.createTextNode(replacedText), node);
+                    }
                 }
             }
         }
     }
+
+    function performReplaceOnNodeListRecursive(elements) {
+        for (var i = 0; i < elements.length; i++) {
+            var element = elements[i];
+
+            for (var j = 0; j < element.childNodes.length; j++) {
+                var node = element.childNodes[j];
+
+                if (node.nodeType === 3) {
+                    var text = node.nodeValue;
+                    var replacedText = replaceText(text);
+
+                    if (replacedText !== text) {
+                        element.replaceChild(document.createTextNode(replacedText), node);
+                    }
+                }
+            }
+
+            if (element.childNodes.length)
+                performReplaceOnNodeListRecursive(element.childNodes);
+        }
+    }
+
+    performReplaceOnNodeList(document.getElementsByTagName('*'));
+
+    var observer = new MutationObserver(function(mutations){
+        mutations.forEach(function(m) {
+            if (m.addedNodes.length) {
+                performReplaceOnNodeListRecursive(m.addedNodes);
+            }
+        })
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        attributes: false,
+        characterData: true,
+        subtree: true,
+        attributeOldValue: false,
+        characterDataOldValue: false
+    })
+
 })
+
+
 
