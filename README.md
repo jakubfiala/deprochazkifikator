@@ -2,6 +2,8 @@
 
 ### Nahraď meno svojho potenciálneho premiéra niečim vhodnejším.
 
+![prochi](http://t3.aimg.sk/magaziny/UB_ueUFwRmLEqjWbxRuNSQ~Radoslav-prochazka-zamysleny-pohlad-sveter-tasr.jpg?t=LzgwMHg0NTAvc21hcnQ%3D&h=HecOxuRbEn6-UjemBNa9NA&e=2145916800&v=2)
+
 Deprocházkifikátor nahrádza meno nášho najobľúbenejšieho Gazdu, Precedu a Potenciálneho Premiéra názvom podľa výberu užívateľa v prehliadači Chrome. Nainštalovať sa dá [tu.](https://chrome.google.com/webstore/detail/deproch%C3%A1zkifik%C3%A1tor/fibofalicildmhddbklnedjfciffbfoo) Na výber sú:
 
 + Baby Voldemort (predvolené)
