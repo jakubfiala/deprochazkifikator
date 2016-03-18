@@ -14,7 +14,7 @@ Deprocházkifikátor nahrádza meno nášho najobľúbenejšieho Gazdu, Precedu 
 + Gazda
 + Ľutujem
 
-Náhradu je možné si vybrať kliknutím na tlačítko *Options* (Nastavenia) v zozname rozšírení v Chrome. Rozšírenie nefunguje na dynamických stránkach ako napr. Facebook, ale statické stránky ako stránky novín, blogy, atď. by mali fungovať.
+Náhradu je možné si vybrať kliknutím na tlačítko *Options* (Nastavenia) v zozname rozšírení v Chrome. Rozšírenie funguje aj na dynamických stránkach ako napr. Facebook. 
 
 Tento komplexný softvér bol vytvorený ako reakcia na vznik pravicovo-ľavicovo-maďarsko-sociálno-demokraticko-národnej vlády (a.k.a. zlepenca) v marci 2016. Autor chcel týmto počinom vyjadriť kajúcnosť nad svojou voľbou strany Sieť vo voľbách. #nievmojommene #nabuducevolimsas
 
